@@ -2,8 +2,8 @@ import { Component, ViewChild }          from '@angular/core';
 import { Platform, MenuController, Nav } from 'ionic-angular';
 import { StatusBar }                     from '@ionic-native/status-bar';
 import { SplashScreen }                  from '@ionic-native/splash-screen';
-import { ClickerList, Page2 }            from '../pages';
-
+import { ArenaPage, ClickerList, Page2 }      from '../pages';
+import { ArenaComponent }                from '../sharedmodels/arena/arena.component';
 @Component({
   templateUrl: './app.html',
 })
@@ -26,7 +26,7 @@ export class ClickerApp {
     this.splash = splash;
     this.status = status;
 
-    this.rootPage = ClickerList;
+    this.rootPage = ArenaPage;
     this.initializeApp();
 
     // set our app's pages

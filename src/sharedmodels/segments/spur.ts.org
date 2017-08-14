@@ -1,0 +1,70 @@
+import {Vector, vector_distance} from './vector';
+export const ANZAHL_PUNKTE_PRO_EINHEIT: number = 10;
+
+export class Spur {
+  private _punkte: Vector[];
+  private _color: string;
+  private _laenge: number;
+
+  constructor( punkte: Vector[], color: string = '#0000FF') {
+    // this._punkte = List<Standpunkt>(punkte);
+    this._color = color;
+    this._punkte = punkte; // this.reduce(punkte);
+  };
+  public color(): string {
+    return this._color;
+  }
+  public punkte(): Vector[] {
+    return this._punkte;
+  }
+  /**
+   * errechnet die Summe der Distanzen zwischen den Standpunkten
+   */
+  public laenge(): number {
+    if (this._laenge)
+      return this._laenge;
+
+    this._laenge = 0;
+    for (let i: number = 1; i < this._punkte.length; i++) {
+      this._laenge += vector_distance(this._punkte[i - 1], this._punkte[i]);
+    }
+    return this._laenge;
+  }
+
+  /**
+   * Benötigte weg um von st1 bis st2 zu kommen mit der Geschwindigkeit an st1
+   */
+  public teilspur(von: number, bis?: number, color?: string): Spur {
+    let weg: number = 0;
+    let teilsp: Vector[] = [];
+    if (! bis)
+      bis = 9999999999;
+
+    if (von < bis) {
+      for (let i: number = 1; i < this._punkte.length; i++) {
+        weg += vector_distance(this._punkte[i - 1], this._punkte[i]);
+        if (weg >= von && weg <= bis) {
+          teilsp.push(this._punkte[i]);
+        }
+        if (weg > bis)
+          break;
+      }
+    }
+    else if (bis < von) {
+      // rueckwaertz
+      for (let i: number = 1; i < this._punkte.length; i++) {
+        weg += vector_distance(this._punkte[i - 1], this._punkte[i]);
+        if (weg >= bis && weg <= von) {
+          teilsp.push(this._punkte[i]);
+        }
+        if (weg > von)
+          break;
+      }
+      teilsp.reverse();
+    }
+    else {
+      // halten
+    }
+    return new Spur(teilsp, color);
+  }
+}

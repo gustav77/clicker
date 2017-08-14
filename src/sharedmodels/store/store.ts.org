@@ -1,0 +1,496 @@
+import {ActionReducer, Action} from '@ngrx/store';
+import {Arena} from '../arena/arena';
+import {Spur} from '../segments/spur';
+import {Standpunkt} from '../segments/standpunkt';
+import {Segment} from '../segments/segment';
+import {Gang} from '../segments/gang';
+import {Audiofile} from '../audio/audiofile';
+import {PatternName} from '../pattern/pattern-name';
+import {AudioProfile} from '../audio/audioprofile';
+import {StatistikData} from '../pattern/statistik-data';
+export const SELECT_ITEM: string = 'SELECT_ITEM';
+export const SEGMENTS_SELECT_ITEM: string = 'SEGMENTS_SELECT_ITEM';
+export const selectedSegment: ActionReducer<Segment> = (state: Segment, action: Action) => {
+  switch (action.type) {
+    case 'SEGMENTS_SELECT_ITEM':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+export const audioProfile: ActionReducer<AudioProfile> = (state: AudioProfile, action: Action) => {
+  switch (action.type) {
+    case 'SET_AUDIO_PROFILE':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+
+export const editModeSeg: ActionReducer<string> = (state: string, action: Action) => {
+  switch (action.type) {
+    case 'SET_EDITMODE_SEG':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const editModeAudio: ActionReducer<string> = (state: string, action: Action) => {
+  switch (action.type) {
+    case 'SET_EDITMODE_AUDIO':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const segmentFormValue: ActionReducer<any> = (state: any, action: Action) => {
+  switch (action.type) {
+    case 'SET_SEGMENT_FORM_VALUE':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const animationRunning: ActionReducer<boolean> = (state: boolean = false, action: Action) => {
+  switch (action.type) {
+    case 'SET_RUNNING':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const gangNeeded: ActionReducer<boolean> = (state: boolean = true, action: Action) => {
+  switch (action.type) {
+    case 'SET_GANG_NEEDED':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const handNeeded: ActionReducer<boolean> = (state: boolean = false, action: Action) => {
+  switch (action.type) {
+    case 'SET_HAND_NEEDED':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const eckenRadiusNeeded: ActionReducer<boolean> = (state: boolean = false, action: Action) => {
+  switch (action.type) {
+    case 'SET_ECKENRADIUS_NEEDED':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const anzahlBogenNeeded: ActionReducer<boolean> = (state: boolean = false, action: Action) => {
+  switch (action.type) {
+    case 'SET_ANZAHLBOGEN_NEEDED':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const flyingChanges: ActionReducer<boolean> = (state: boolean = false, action: Action) => {
+  switch (action.type) {
+    case 'SET_FLYINGCHANGES':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const dauerNeeded: ActionReducer<boolean> = (state: boolean = false, action: Action) => {
+  switch (action.type) {
+    case 'SET_DAUER_NEEDED':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const videoRuntime: ActionReducer<number> = (state: number = 0, action: Action) => {
+  switch (action.type) {
+    case 'SET_VIDEO_RUNTIME':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const gangStellungComment: ActionReducer<any> = (state: any, action: Action) => {
+  switch (action.type) {
+    case 'SET_GANG_STELLUNG_COMMENT':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const gangname: ActionReducer<string> = (state: string = '', action: Action) => {
+  switch (action.type) {
+    case 'SET_GANGNAME':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const stellung: ActionReducer<string> = (state: string = '', action: Action) => {
+  switch (action.type) {
+    case 'SET_STELLUNG':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const comment: ActionReducer<string> = (state: string = '', action: Action) => {
+  switch (action.type) {
+    case 'SET_COMMENT':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const gitterOn: ActionReducer<boolean> = (state: boolean = false, action: Action) => {
+  switch (action.type) {
+    case 'SET_GITTER_ON':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const editingSegment: ActionReducer<boolean> = (state: boolean = false, action: Action) => {
+  switch (action.type) {
+    case 'SET_EDITING_SEGMENT':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const selectedArena: ActionReducer<Arena> = (state: Arena, action: Action) => {
+  switch (action.type) {
+    case 'SET_ARENA':
+      // console.log(JSON.stringify(action.payload));
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+export const audiofiles: ActionReducer<Audiofile[]> = (state: Audiofile[] = [], action: Action) => {
+  switch (action.type) {
+    case 'AUDIOFILES_ADD_ITEMS':
+      return action.payload;
+    case 'AUDIOFILES_CREATE_ITEM':
+      return [...state, action.payload];
+    case 'AUDIOFILES_UPDATE_ITEM':
+      return state.map(item => {
+        if (item === action.payload) {
+          return action.payload;
+        }
+        else {
+          return item;
+        }
+      });
+    case 'AUDIOFILES_INSERT_ITEM':
+      let newArr: Audiofile[] = [];
+      state.forEach( seg => {
+        if ( seg === action.payload.audiobefore ) {
+          newArr.push( action.payload.newaudiofile );
+          newArr.push( seg );
+        }
+        else {
+          newArr.push( seg );
+        }
+      });
+      return newArr;
+
+    case 'AUDIOFILES_DELETE_ITEM':
+      return state.filter(item => {
+        return item !== action.payload;
+      });
+    default:
+      return state;
+  }
+};
+export const selectedAudiofile: ActionReducer<Audiofile> = (state: Audiofile, action: Action) => {
+  switch (action.type) {
+    case 'AUDIOFILES_SELECT_ITEM':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+export const audioBefore: ActionReducer<Audiofile> = (state: Audiofile = new Audiofile(), action: Action) => {
+  switch (action.type) {
+    case 'SET_AUDIO_BEFORE':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+
+export const spuren: ActionReducer<Spur[]> = (state: Spur[] = [], action: Action) => {
+  switch (action.type) {
+    case 'SPUR_ADD_ITEMS':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+/**
+ * hier als Array um auch mehrere Pferde gleichzeitig zeigen zu können
+ */
+export const selectedStandpunkte: ActionReducer<Standpunkt[]> = (state: Standpunkt[], action: Action) => {
+  switch (action.type) {
+    case 'STANDPUNKTE_ADD_ITEMS':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const previewSegment: ActionReducer<Segment[]> = (state: Segment[], action: Action) => {
+  switch (action.type) {
+    case 'SET_PREVIEW_SEGMENT':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+export const platform: ActionReducer<string> = (state: string, action: Action) => {
+  switch (action.type) {
+    case 'SET_PLATFORM':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+export const toEditSegment: ActionReducer<Segment> = (state: Segment, action: Action) => {
+  switch (action.type) {
+    case 'TO_EDIT_SEGMENT_SELECT_ITEM':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+export const statistikData: ActionReducer<StatistikData> = (state: StatistikData, action: Action) => {
+  switch (action.type) {
+    case 'SET_STATISTIK_DATA':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+
+export const segments: ActionReducer<Segment[]> = (state: Segment[], action: Action) => {
+  switch (action.type) {
+    case 'SEGMENTS_ADD_ITEMS':
+      return action.payload;
+    case 'SEGMENTS_CREATE_ITEM':
+      return [...state, action.payload];
+    case 'SEGMENTS_UPDATE_ITEM':
+      let tmp = [];
+      state.forEach( seg => {
+        if (seg === action.payload.oldItem) {
+          action.payload.newItem.forEach(s => {
+            tmp.push(s);
+          });
+        }
+        else {
+          tmp.push(seg);
+        }
+      });
+      console.log(JSON.stringify(tmp));
+      return tmp;
+      /*return state.map( pn => {
+          if ( pn === action.payload.oldItem ) {
+            return action.payload.newItem;
+          }
+          else {
+            return pn;
+          }
+        });*/
+    case 'SEGMENTS_INSERT_ITEM':
+      let newArr: Segment[] = [];
+        state.forEach( seg => {
+          if ( seg === action.payload.segbefore ) {
+            action.payload.seg.forEach( (s: Segment) => {
+              newArr.push( s );
+            });
+            newArr.push( seg );
+          }
+          else {
+            newArr.push( seg );
+          }
+        });
+      return newArr;
+
+    case 'SEGMENTS_DELETE_ITEM':
+      let tmpstate = state.filter(item => {
+        return item !== action.payload;
+      });
+      newArr = [];
+      tmpstate.forEach( seg => {
+        newArr.push(seg);
+      });
+      return newArr;
+
+    default:
+      return state;
+  }
+};
+
+export const gaenge: ActionReducer<Gang[]> = (state: Gang[] = [], action: Action) => {
+  switch (action.type) {
+    case 'GANG_ADD_ITEMS':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const speedvorlage: ActionReducer<any> = (state: any = {}, action: Action) => {
+  switch (action.type) {
+    case 'SPEEDVORLAGE_ADD_ITEMS':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const stellungen: ActionReducer<any[]> = (state: any[] = [], action: Action) => {
+  switch (action.type) {
+    case 'STELLUNGEN_ADD_ITEMS':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const sampleNames: ActionReducer<PatternName[]> = (state: PatternName[] = [], action: Action) => {
+  switch (action.type) {
+    case 'SAMPLENAME_ADD_ITEMS':
+      console.log(action.type, action.payload);
+      return action.payload;
+    case 'SAMPLENAME_CREATE_ITEM':
+      return [...state, action.payload];
+    case 'SAMPLENAME_UPDATE_ITEM':
+      return state.map( pn => {
+        if ( pn.uuid === action.payload.uuid ) {
+          return action.payload;
+        }
+        else {
+          return pn;
+        }
+      });
+
+    case 'SAMPLENAME_DELETE_ITEM':
+      return state.filter(item => {
+        return item !== action.payload;
+      });
+    default:
+      return state;
+  }
+};
+
+export const patternNames: ActionReducer<PatternName[]> = (state: PatternName[] = [], action: Action) => {
+  switch (action.type) {
+    case 'PATTERNNAME_ADD_ITEMS':
+      console.log(action.type, action.payload);
+      return action.payload;
+    case 'PATTERNNAME_CREATE_ITEM':
+      return [...state, action.payload];
+    case 'PATTERNNAME_UPDATE_ITEM':
+      return state.map( pn => {
+        if ( pn.uuid === action.payload.uuid ) {
+          return action.payload;
+        }
+        else {
+          return pn;
+        }
+      });
+
+    case 'PATTERNNAME_DELETE_ITEM':
+      return state.filter(item => {
+        return item !== action.payload;
+      });
+    default:
+      return state;
+  }
+};
+export const selectedPatternName: ActionReducer<PatternName> = (state: PatternName, action: Action) => {
+  switch (action.type) {
+    case 'PATTERNNAME_SELECT_ITEM':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+export const dataKind: ActionReducer<string> = (state: string = 'music', action: Action) => {
+  switch (action.type) {
+    case 'SET_DATAKIND':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const afPosition: ActionReducer<number> = (state: number = 0, action: Action) => {
+  switch (action.type) {
+    case 'SET_AFPOSITION':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+export const audioPosition: ActionReducer<number> = (state: number = 0, action: Action) => {
+  switch (action.type) {
+    case 'SET_AUDIOPOSITION':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+export const pinchScale: ActionReducer<number> = (state: number = 1, action: Action) => {
+  switch (action.type) {
+    case 'SET_PINCHSCALE':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+export const mediaUri: ActionReducer<string> = (state: string, action: Action) => {
+  switch (action.type) {
+    case 'SET_MEDIA_URI':
+      return action.payload;
+    default:
+      return state;
+  }
+
+};
+
+/*export const media: ActionReducer<Media> = (state: Media, action: Action) => {
+  switch (action.type) {
+    case 'SET_MEDIA':
+      if (state)
+        state.release();
+      return action.payload;
+    default:
+      return state;
+  }
+
+};*/
